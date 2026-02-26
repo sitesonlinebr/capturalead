@@ -1,84 +1,107 @@
-/**
- * CONFIGURAÇÃO GLOBAL
- */
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLVPHwSzID3YeplRIrGkuqzvdfJYoLYH2_kKOLENPp8Xs_pXyeFR4UmiHz2WfmdXWc/exec";
+// =====================================================
+// CONFIG
+// =====================================================
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxLGi9Pa-5rCbI0ZJ72jA0PBxjY1cxKs5ovLGiVm0ARxZtgtJbWPEZte88yOVKCBlo/exec";
 
-/**
- * MÁSCARA DE TELEFONE BRASILEIRA
- */
-const telInput = document.getElementById('telefone');
-telInput.addEventListener('input', (e) => {
-    let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
-    e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
-});
-
-/**
- * CAPTURA DE METADADOS (UTMs, URL, Browser)
- */
-function getLeadMetadata() {
-    const params = new URLSearchParams(window.location.search);
-    return {
-        utm_source: params.get('utm_source') || 'direto',
-        utm_medium: params.get('utm_medium') || '',
-        utm_campaign: params.get('utm_campaign') || '',
-        utm_term: params.get('utm_term') || '',
-        utm_content: params.get('utm_content') || '',
-        page_url: window.location.href,
-        referrer: document.referrer || 'direto',
-        user_agent: navigator.userAgent,
-        timestamp: new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })
-    };
+// =====================================================
+// HELPERS
+// =====================================================
+function getUTMsFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    utm_source: params.get("utm_source") || "",
+    utm_medium: params.get("utm_medium") || "",
+    utm_campaign: params.get("utm_campaign") || "",
+    utm_term: params.get("utm_term") || "",
+    utm_content: params.get("utm_content") || "",
+  };
 }
 
-/**
- * ENVIO DO FORMULÁRIO
- */
-const form = document.getElementById('leadForm');
-const btn = document.getElementById('btnSubmit');
-const statusMsg = document.getElementById('statusMsg');
+function onlyDigits(str) {
+  return (str || "").replace(/\D/g, "");
+}
 
-let isSubmitting = false;
+// Máscara: (99) 99999-9999
+function maskPhoneBR(value) {
+  const d = onlyDigits(value).slice(0, 11);
+  const len = d.length;
 
-form.addEventListener('submit', async (e) => {
+  if (len === 0) return "";
+  if (len <= 2) return `(${d}`;
+  if (len <= 7) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+}
+
+function setButtonLoading(isLoading) {
+  const btn = document.getElementById("submitBtn");
+  const txt = document.getElementById("btnText");
+  if (!btn || !txt) return;
+
+  btn.disabled = isLoading;
+  txt.textContent = isLoading ? "Enviando..." : "Enviar";
+}
+
+// =====================================================
+// MAIN
+// =====================================================
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("leadForm");
+  const telefone = document.getElementById("telefone");
+
+  if (telefone) {
+    telefone.addEventListener("input", (e) => {
+      const cur = e.target.value;
+      e.target.value = maskPhoneBR(cur);
+    });
+
+    telefone.addEventListener("blur", (e) => {
+      // Corrige máscara final ao sair do campo
+      e.target.value = maskPhoneBR(e.target.value);
+    });
+  }
+
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    if (isSubmitting) return;
 
-    // Honeypot (Anti-spam) - Se preenchido, ignora o envio
-    if (form._hp_field && form._hp_field.value !== "") return;
+    setButtonLoading(true);
 
-    isSubmitting = true;
-    btn.disabled = true;
-    btn.innerText = "ENVIANDO AGUARDE...";
-    statusMsg.classList.add('hidden');
+    const utms = getUTMsFromURL();
 
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
-    
-    // Mescla dados do formulário com metadados
-    const payload = { ...data, ...getLeadMetadata() };
+    const payload = {
+      nome: (document.getElementById("nome")?.value || "").trim(),
+      telefone: (document.getElementById("telefone")?.value || "").trim(),
+      email: (document.getElementById("email")?.value || "").trim(),
+      tipo_estabelecimento: (document.getElementById("tipo_estabelecimento")?.value || "").trim(),
+      faturamento_mensal: (document.getElementById("faturamento_mensal")?.value || "").trim(),
+
+      // UTMs
+      ...utms,
+
+      // Extras
+      page_url: window.location.href,
+      user_agent: navigator.userAgent,
+    };
 
     try {
-        // Envio para o Google Apps Script
-        await fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors', // Obrigatório para Google Scripts
-            cache: 'no-cache',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
+      // Importante: mode 'no-cors' (como você pediu)
+      // Observação: com no-cors a resposta vira "opaque" e não dá pra ler status/body.
+      // Então, aqui consideramos "sucesso" se não lançar exceção.
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-        // Redireciona para página de agradecimento
-        window.location.href = 'obrigado.html';
-
-    } catch (error) {
-        console.error("Erro no envio:", error);
-        statusMsg.innerText = "Ocorreu um erro ao enviar. Verifique sua conexão.";
-        statusMsg.classList.remove('hidden');
-        statusMsg.classList.add('text-red-500');
-        
-        // Reseta o botão
-        btn.disabled = false;
-        btn.innerText = "ENVIAR";
-        isSubmitting = false;
+      window.location.href = "./obrigado.html";
+    } catch (err) {
+      console.error("Erro ao enviar lead:", err);
+      alert("Não conseguimos enviar agora. Verifique sua internet e tente novamente.");
+      setButtonLoading(false);
     }
+  });
 });
