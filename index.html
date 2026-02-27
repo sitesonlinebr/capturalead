@@ -3,115 +3,165 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Orçamento de Site</title>
+  <title>Criação de Sites Profissionais</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <meta name="description" content="Solicite um orçamento e descubra como um site profissional pode aumentar suas vendas todos os dias." />
 </head>
 
-<body class="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+<body class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
 
-  <div class="w-full max-w-xl bg-white p-8 rounded-3xl shadow-sm ring-1 ring-slate-200">
+  <div class="w-full max-w-5xl grid md:grid-cols-2 bg-white rounded-3xl shadow-xl overflow-hidden">
 
-    <h1 class="text-2xl font-semibold text-center">
-      Solicitar Orçamento
-    </h1>
+    <!-- LADO ESQUERDO (COPY) -->
+    <div class="p-10 flex flex-col justify-center bg-slate-900 text-white">
 
-    <p class="text-center text-slate-600 mt-2">
-      Preencha seus dados para enviar direto no WhatsApp
-    </p>
+      <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wide">
+        Transforme sua presença digital
+      </span>
 
-    <form id="leadForm" class="mt-6 space-y-4">
+      <h1 class="mt-4 text-3xl md:text-4xl font-bold leading-tight">
+        Seu negócio precisa de um site que gere clientes todos os dias.
+      </h1>
 
-      <div>
-        <label class="text-sm font-medium">Nome</label>
-        <input 
-          id="nome"
-          type="text"
-          required
-          class="mt-1 w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500"
-          placeholder="Seu nome"
-        />
+      <p class="mt-5 text-slate-300 leading-relaxed">
+        Hoje, a maioria das decisões de compra começam no Google.
+        Se sua empresa não tem um site profissional, você está perdendo
+        vendas para seus concorrentes.
+      </p>
+
+      <div class="mt-6 space-y-3 text-sm">
+        <div class="flex items-center gap-2">
+          <span class="text-emerald-400">✔</span>
+          <span>Design moderno e profissional</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-emerald-400">✔</span>
+          <span>Responsivo (celular e computador)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-emerald-400">✔</span>
+          <span>Estratégia focada em gerar contatos</span>
+        </div>
       </div>
 
-      <div>
-        <label class="text-sm font-medium">Telefone</label>
-        <input 
-          id="telefone"
-          type="tel"
-          required
-          class="mt-1 w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500"
-          placeholder="(99) 99999-9999"
-        />
-      </div>
+      <p class="mt-6 text-slate-400 text-sm">
+        Solicite um orçamento agora e veja como podemos ajudar seu negócio a crescer.
+      </p>
 
-      <div>
-        <label class="text-sm font-medium">Email</label>
-        <input 
-          id="email"
-          type="email"
-          required
-          class="mt-1 w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500"
-          placeholder="seuemail@email.com"
-        />
-      </div>
+    </div>
 
-      <div>
-        <label class="text-sm font-medium">Tipo de Estabelecimento</label>
-        <select 
-          id="tipo_estabelecimento"
-          required
-          class="mt-1 w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500"
+    <!-- LADO DIREITO (FORMULÁRIO) -->
+    <div class="p-8 md:p-10">
+
+      <h2 class="text-2xl font-semibold">
+        Solicitar Orçamento Gratuito
+      </h2>
+
+      <p class="text-slate-600 mt-2 text-sm">
+        Preencha os dados abaixo e receba atendimento imediato via WhatsApp.
+      </p>
+
+      <form id="leadForm" class="mt-6 space-y-4">
+
+        <div>
+          <label class="text-sm font-medium">Nome</label>
+          <input 
+            id="nome"
+            type="text"
+            required
+            class="mt-1 w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500"
+            placeholder="Seu nome completo"
+          />
+        </div>
+
+        <div>
+          <label class="text-sm font-medium">Telefone</label>
+          <input 
+            id="telefone"
+            type="tel"
+            required
+            class="mt-1 w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500"
+            placeholder="(99) 99999-9999"
+          />
+        </div>
+
+        <div>
+          <label class="text-sm font-medium">Email</label>
+          <input 
+            id="email"
+            type="email"
+            required
+            class="mt-1 w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500"
+            placeholder="seuemail@email.com"
+          />
+        </div>
+
+        <div>
+          <label class="text-sm font-medium">Tipo de Estabelecimento</label>
+          <select 
+            id="tipo_estabelecimento"
+            required
+            class="mt-1 w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500"
+          >
+            <option value="" disabled selected>Selecione</option>
+            <option>Açaí</option>
+            <option>Bar</option>
+            <option>Buffet por Kilo</option>
+            <option>Cafeteria</option>
+            <option>Confeitaria/Doceria/Padaria</option>
+            <option>Consultor Geral</option>
+            <option>Conveniência</option>
+            <option>Fast Food</option>
+            <option>Lanchonete</option>
+            <option>Marmitex</option>
+            <option>Mercado</option>
+            <option>Pizzaria</option>
+            <option>Restaurante</option>
+            <option>Sushi</option>
+            <option>Outros do Ramo de Alimentação</option>
+            <option>Outros Não Restaurante</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="text-sm font-medium">Faturamento Mensal</label>
+          <select 
+            id="faturamento_mensal"
+            required
+            class="mt-1 w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500"
+          >
+            <option value="" disabled selected>Selecione</option>
+            <option>Estou Abrindo</option>
+            <option>Até 15 mil</option>
+            <option>Entre 15 mil e 40 mil</option>
+            <option>Entre 40 mil e 70 mil</option>
+            <option>Entre 70 mil e 120 mil</option>
+            <option>Acima de 120 mil</option>
+            <option>Franquia ou Multi Lojas</option>
+          </select>
+        </div>
+
+        <button 
+          id="submitBtn"
+          type="submit"
+          class="w-full bg-emerald-600 text-white py-4 rounded-xl font-semibold text-lg hover:bg-emerald-700 transition transform hover:scale-[1.02]"
         >
-          <option value="" disabled selected>Selecione</option>
-          <option>Açaí</option>
-          <option>Bar</option>
-          <option>Buffet por Kilo</option>
-          <option>Cafeteria</option>
-          <option>Confeitaria/Doceria/Padaria</option>
-          <option>Consultor Geral</option>
-          <option>Conveniência</option>
-          <option>Fast Food</option>
-          <option>Lanchonete</option>
-          <option>Marmitex</option>
-          <option>Mercado</option>
-          <option>Pizzaria</option>
-          <option>Restaurante</option>
-          <option>Sushi</option>
-          <option>Outros do Ramo de Alimentação</option>
-          <option>Outros Não Restaurante</option>
-        </select>
-      </div>
+          Quero Receber Meu Orçamento
+        </button>
 
-      <div>
-        <label class="text-sm font-medium">Faturamento Mensal</label>
-        <select 
-          id="faturamento_mensal"
-          required
-          class="mt-1 w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500"
-        >
-          <option value="" disabled selected>Selecione</option>
-          <option>Estou Abrindo</option>
-          <option>Até 15 mil</option>
-          <option>Entre 15 mil e 40 mil</option>
-          <option>Entre 40 mil e 70 mil</option>
-          <option>Entre 70 mil e 120 mil</option>
-          <option>Acima de 120 mil</option>
-          <option>Franquia ou Multi Lojas</option>
-        </select>
-      </div>
+        <p class="text-xs text-center text-slate-500 mt-3">
+          Seus dados estão seguros. Não enviamos spam.
+        </p>
 
-      <button 
-        id="submitBtn"
-        type="submit"
-        class="w-full bg-emerald-600 text-white py-3 rounded-xl font-semibold hover:bg-emerald-700 transition"
-      >
-        Enviar no WhatsApp
-      </button>
+      </form>
 
-    </form>
+    </div>
 
   </div>
 
   <script src="app.js"></script>
+
 </body>
 </html>
