@@ -1,27 +1,12 @@
-// =====================================================
-// CONFIG
-// =====================================================
-const WHATSAPP_NUMBER = "5588996347026"; // 55 + DDD + número (sem espaços)
+const WHATSAPP_NUMBER = "5588996347026";
 
-// =====================================================
-// HELPERS
-// =====================================================
-function getUTMsFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  return {
-    utm_source: params.get("utm_source") || "",
-    utm_medium: params.get("utm_medium") || "",
-    utm_campaign: params.get("utm_campaign") || "",
-    utm_term: params.get("utm_term") || "",
-    utm_content: params.get("utm_content") || "",
-  };
-}
-
+// ========================
+// Máscara Telefone
+// ========================
 function onlyDigits(str) {
   return (str || "").replace(/\D/g, "");
 }
 
-// Máscara: (99) 99999-9999
 function maskPhoneBR(value) {
   const d = onlyDigits(value).slice(0, 11);
   const len = d.length;
@@ -32,82 +17,64 @@ function maskPhoneBR(value) {
   return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
 }
 
-function setButtonLoading(isLoading) {
-  const btn = document.getElementById("submitBtn");
-  const txt = document.getElementById("btnText");
-  if (!btn || !txt) return;
-
-  btn.disabled = isLoading;
-  txt.textContent = isLoading ? "Abrindo WhatsApp..." : "Enviar no WhatsApp";
-}
-
+// ========================
+// Construir Mensagem
+// ========================
 function buildWhatsAppMessage(data) {
-  // Mensagem bem objetiva (pode ajustar o texto se quiser)
   return [
-    "📩 *NOVO LEAD — DEMONSTRAÇÃO*",
+    "*Tenho interesse em orçamento para meu site!*",
     "",
-    `👤 *Nome:* ${data.nome}`,
-    `📞 *Telefone:* ${data.telefone}`,
-    `✉️ *Email:* ${data.email}`,
-    `🏪 *Tipo:* ${data.tipo_estabelecimento}`,
-    `💰 *Faturamento:* ${data.faturamento_mensal}`,
-    "",
-    "📊 *UTMs:*",
-    `• source: ${data.utm_source || "-"}`,
-    `• medium: ${data.utm_medium || "-"}`,
-    `• campaign: ${data.utm_campaign || "-"}`,
-    `• term: ${data.utm_term || "-"}`,
-    `• content: ${data.utm_content || "-"}`,
-    "",
-    `🔗 *Página:* ${data.page_url}`,
+    ` *Nome:* ${data.nome}`,
+    ` *Telefone:* ${data.telefone}`,
+    ` *Email:* ${data.email}`,
+    ` *Tipo:* ${data.tipo}`,
+    ` *Faturamento:* ${data.faturamento}`
   ].join("\n");
 }
 
-function openWhatsApp(number, message) {
-  // wa.me funciona melhor em celular; api.whatsapp.com também é ok.
-  const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+// ========================
+// Abrir WhatsApp
+// ========================
+function openWhatsApp(message) {
+  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
   window.location.href = url;
 }
 
-// =====================================================
-// MAIN
-// =====================================================
+// ========================
+// Inicialização
+// ========================
 document.addEventListener("DOMContentLoaded", () => {
+
   const form = document.getElementById("leadForm");
   const telefone = document.getElementById("telefone");
+  const submitBtn = document.getElementById("submitBtn");
 
-  if (telefone) {
-    telefone.addEventListener("input", (e) => {
-      e.target.value = maskPhoneBR(e.target.value);
-    });
-    telefone.addEventListener("blur", (e) => {
-      e.target.value = maskPhoneBR(e.target.value);
-    });
-  }
+  // Máscara telefone
+  telefone.addEventListener("input", (e) => {
+    e.target.value = maskPhoneBR(e.target.value);
+  });
 
-  if (!form) return;
-
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", function(e) {
     e.preventDefault();
-    setButtonLoading(true);
 
-    const utms = getUTMsFromURL();
+    submitBtn.disabled = true;
+    submitBtn.innerText = "Abrindo WhatsApp...";
 
     const payload = {
-      nome: (document.getElementById("nome")?.value || "").trim(),
-      telefone: (document.getElementById("telefone")?.value || "").trim(),
-      email: (document.getElementById("email")?.value || "").trim(),
-      tipo_estabelecimento: (document.getElementById("tipo_estabelecimento")?.value || "").trim(),
-      faturamento_mensal: (document.getElementById("faturamento_mensal")?.value || "").trim(),
-      ...utms,
-      page_url: window.location.href,
+      nome: document.getElementById("nome").value.trim(),
+      telefone: document.getElementById("telefone").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      tipo: document.getElementById("tipo_estabelecimento").value.trim(),
+      faturamento: document.getElementById("faturamento_mensal").value.trim()
     };
 
-    // Abre WhatsApp com a mensagem pronta
-    const msg = buildWhatsAppMessage(payload);
-    openWhatsApp(WHATSAPP_NUMBER, msg);
+    const message = buildWhatsAppMessage(payload);
+    openWhatsApp(message);
 
-    // fallback: reabilita caso o navegador bloqueie/usuário volte
-    setTimeout(() => setButtonLoading(false), 1200);
+    setTimeout(() => {
+      submitBtn.disabled = false;
+      submitBtn.innerText = "Enviar no WhatsApp";
+    }, 1500);
   });
+
 });
