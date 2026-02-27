@@ -5,103 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Agendar Demonstração</title>
 
-  <!-- Tailwind (CDN) -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <meta name="description" content="Preencha seus dados e em breve nosso comercial entrará em contato para agendar uma demonstração." />
+  <meta name="description" content="Preencha seus dados e envie direto no WhatsApp para agendar uma demonstração." />
 </head>
 
 <body class="min-h-screen bg-slate-50 text-slate-900">
   <main class="mx-auto flex min-h-screen max-w-6xl items-center justify-center px-4 py-10">
     <div class="grid w-full gap-8 lg:grid-cols-2">
-      <!-- Left: Text / Brand -->
       <section class="flex flex-col justify-center">
         <div class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm shadow-sm ring-1 ring-slate-200 w-fit">
           <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
-          <span class="text-slate-700">Atendimento comercial rápido</span>
+          <span class="text-slate-700">Envio direto no WhatsApp</span>
         </div>
 
         <h1 class="mt-5 text-3xl font-semibold tracking-tight sm:text-4xl">
-          Receba uma demonstração e veja como aumentar suas vendas
+          Agende uma demonstração em poucos cliques
         </h1>
         <p class="mt-3 text-slate-600">
-          Preencha o formulário. Em poucos minutos, você recebe o contato do nosso time para agendar a demonstração.
+          Preencha os dados e finalize enviando tudo pronto no WhatsApp.
         </p>
-
-        <div class="mt-6 grid gap-3 sm:grid-cols-2">
-          <div class="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
-            <p class="text-sm font-medium">✔ 100% responsivo</p>
-            <p class="mt-1 text-sm text-slate-600">Funciona perfeito no celular e PC.</p>
-          </div>
-          <div class="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
-            <p class="text-sm font-medium">✔ Relatório de marketing</p>
-            <p class="mt-1 text-sm text-slate-600">Captura automática das UTMs.</p>
-          </div>
-        </div>
       </section>
 
-      <!-- Right: Form -->
       <section class="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200 sm:p-8">
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <h2 class="text-xl font-semibold">Solicitar contato</h2>
-            <p class="mt-1 text-sm text-slate-600">Preencha os dados abaixo.</p>
-          </div>
-          <div class="hidden sm:block rounded-2xl bg-slate-50 px-3 py-2 text-xs text-slate-600 ring-1 ring-slate-200">
-            Tempo médio: 20s
-          </div>
-        </div>
+        <h2 class="text-xl font-semibold">Solicitar contato</h2>
+        <p class="mt-1 text-sm text-slate-600">Preencha os dados abaixo.</p>
 
         <form id="leadForm" class="mt-6 space-y-4">
           <div>
             <label class="text-sm font-medium text-slate-700" for="nome">Nome</label>
-            <input
-              id="nome"
-              name="nome"
-              type="text"
-              required
-              autocomplete="name"
-              placeholder="Seu nome"
-              class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none ring-emerald-500 focus:ring-2"
-            />
+            <input id="nome" name="nome" type="text" required
+              class="mt-1 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none ring-emerald-500 focus:ring-2"
+              placeholder="Seu nome" />
           </div>
 
           <div>
             <label class="text-sm font-medium text-slate-700" for="telefone">Telefone</label>
-            <input
-              id="telefone"
-              name="telefone"
-              type="tel"
-              required
-              inputmode="tel"
-              autocomplete="tel"
-              placeholder="(99) 99999-9999"
-              class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none ring-emerald-500 focus:ring-2"
-            />
-            <p class="mt-1 text-xs text-slate-500">Formato: (99) 99999-9999</p>
+            <input id="telefone" name="telefone" type="tel" required inputmode="tel"
+              class="mt-1 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none ring-emerald-500 focus:ring-2"
+              placeholder="(99) 99999-9999" />
           </div>
 
           <div>
             <label class="text-sm font-medium text-slate-700" for="email">Email</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              autocomplete="email"
-              placeholder="seuemail@exemplo.com"
-              class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none ring-emerald-500 focus:ring-2"
-            />
+            <input id="email" name="email" type="email" required
+              class="mt-1 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none ring-emerald-500 focus:ring-2"
+              placeholder="seuemail@exemplo.com" />
           </div>
 
           <div>
             <label class="text-sm font-medium text-slate-700" for="tipo_estabelecimento">Tipo de Estabelecimento</label>
-            <select
-              id="tipo_estabelecimento"
-              name="tipo_estabelecimento"
-              required
-              class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none ring-emerald-500 focus:ring-2"
-            >
+            <select id="tipo_estabelecimento" name="tipo_estabelecimento" required
+              class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none ring-emerald-500 focus:ring-2">
               <option value="" disabled selected>Selecione uma opção</option>
               <option>Açaí</option>
               <option>Bar</option>
@@ -124,12 +78,8 @@
 
           <div>
             <label class="text-sm font-medium text-slate-700" for="faturamento_mensal">Faturamento Mensal</label>
-            <select
-              id="faturamento_mensal"
-              name="faturamento_mensal"
-              required
-              class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none ring-emerald-500 focus:ring-2"
-            >
+            <select id="faturamento_mensal" name="faturamento_mensal" required
+              class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none ring-emerald-500 focus:ring-2">
               <option value="" disabled selected>Selecione uma opção</option>
               <option>Estou Abrindo</option>
               <option>Até 15 mil</option>
@@ -141,23 +91,10 @@
             </select>
           </div>
 
-          <div class="pt-2">
-            <button
-              id="submitBtn"
-              type="submit"
-              class="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:cursor-not-allowed disabled:opacity-70"
-            >
-              <svg class="h-5 w-5 opacity-90" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <span id="btnText">Enviar</span>
-            </button>
-
-            <p class="mt-3 text-center text-xs text-slate-500">
-              Ao enviar, você concorda em ser contatado para agendar uma demonstração.
-            </p>
-          </div>
+          <button id="submitBtn" type="submit"
+            class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:opacity-70">
+            <span id="btnText">Enviar no WhatsApp</span>
+          </button>
         </form>
       </section>
     </div>
