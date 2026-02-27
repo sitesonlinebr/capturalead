@@ -1,7 +1,7 @@
 // =====================================================
 // CONFIG
 // =====================================================
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxLGi9Pa-5rCbI0ZJ72jA0PBxjY1cxKs5ovLGiVm0ARxZtgtJbWPEZte88yOVKCBlo/exec";
+const WHATSAPP_NUMBER = "5588996347026"; // 55 + DDD + número (sem espaços)
 
 // =====================================================
 // HELPERS
@@ -38,7 +38,35 @@ function setButtonLoading(isLoading) {
   if (!btn || !txt) return;
 
   btn.disabled = isLoading;
-  txt.textContent = isLoading ? "Enviando..." : "Enviar";
+  txt.textContent = isLoading ? "Abrindo WhatsApp..." : "Enviar no WhatsApp";
+}
+
+function buildWhatsAppMessage(data) {
+  // Mensagem bem objetiva (pode ajustar o texto se quiser)
+  return [
+    "📩 *NOVO LEAD — DEMONSTRAÇÃO*",
+    "",
+    `👤 *Nome:* ${data.nome}`,
+    `📞 *Telefone:* ${data.telefone}`,
+    `✉️ *Email:* ${data.email}`,
+    `🏪 *Tipo:* ${data.tipo_estabelecimento}`,
+    `💰 *Faturamento:* ${data.faturamento_mensal}`,
+    "",
+    "📊 *UTMs:*",
+    `• source: ${data.utm_source || "-"}`,
+    `• medium: ${data.utm_medium || "-"}`,
+    `• campaign: ${data.utm_campaign || "-"}`,
+    `• term: ${data.utm_term || "-"}`,
+    `• content: ${data.utm_content || "-"}`,
+    "",
+    `🔗 *Página:* ${data.page_url}`,
+  ].join("\n");
+}
+
+function openWhatsApp(number, message) {
+  // wa.me funciona melhor em celular; api.whatsapp.com também é ok.
+  const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+  window.location.href = url;
 }
 
 // =====================================================
@@ -50,21 +78,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (telefone) {
     telefone.addEventListener("input", (e) => {
-      const cur = e.target.value;
-      e.target.value = maskPhoneBR(cur);
+      e.target.value = maskPhoneBR(e.target.value);
     });
-
     telefone.addEventListener("blur", (e) => {
-      // Corrige máscara final ao sair do campo
       e.target.value = maskPhoneBR(e.target.value);
     });
   }
 
   if (!form) return;
 
-  form.addEventListener("submit", async (e) => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
-
     setButtonLoading(true);
 
     const utms = getUTMsFromURL();
@@ -75,33 +99,15 @@ document.addEventListener("DOMContentLoaded", () => {
       email: (document.getElementById("email")?.value || "").trim(),
       tipo_estabelecimento: (document.getElementById("tipo_estabelecimento")?.value || "").trim(),
       faturamento_mensal: (document.getElementById("faturamento_mensal")?.value || "").trim(),
-
-      // UTMs
       ...utms,
-
-      // Extras
       page_url: window.location.href,
-      user_agent: navigator.userAgent,
     };
 
-    try {
-      // Importante: mode 'no-cors' (como você pediu)
-      // Observação: com no-cors a resposta vira "opaque" e não dá pra ler status/body.
-      // Então, aqui consideramos "sucesso" se não lançar exceção.
-      await fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+    // Abre WhatsApp com a mensagem pronta
+    const msg = buildWhatsAppMessage(payload);
+    openWhatsApp(WHATSAPP_NUMBER, msg);
 
-      window.location.href = "./obrigado.html";
-    } catch (err) {
-      console.error("Erro ao enviar lead:", err);
-      alert("Não conseguimos enviar agora. Verifique sua internet e tente novamente.");
-      setButtonLoading(false);
-    }
+    // fallback: reabilita caso o navegador bloqueie/usuário volte
+    setTimeout(() => setButtonLoading(false), 1200);
   });
 });
